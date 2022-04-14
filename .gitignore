@@ -1,4 +1,6 @@
 node_modules/
-service-acct.json
+serviceAccount.json
 build/
 .env
+dist/
+*-debug.log

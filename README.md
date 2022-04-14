@@ -1,11 +1,19 @@
-### Basic Boilerplate
+## Family Fund Backend
 
-# STACK
+# Tech Stack
 
 - GraphQL
 - Express
 - Firebase
+- Nexus (code-first approach to GQL)
 
-# DEV
+# Dev Tools
 
 - Prettier
+- Typescript
+- ts-node-dev (hot reloading)
+
+# TODO:
+
+- ESLINT
+- Add service account to .env
