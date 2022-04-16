@@ -9,6 +9,10 @@ type Exchange {
   name: String
 }
 
+type Mutation {
+  addExchange(lastPrice: Int!, name: String!): Exchange
+}
+
 type Query {
   exchanges(id: Int!): [Exchange!]!
   hello: String

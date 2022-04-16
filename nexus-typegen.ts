@@ -46,6 +46,7 @@ export interface NexusGenObjects {
     lastPrice?: number | null; // Int
     name?: string | null; // String
   }
+  Mutation: {};
   Query: {};
 }
 
@@ -65,6 +66,9 @@ export interface NexusGenFieldTypes {
     lastPrice: number | null; // Int
     name: string | null; // String
   }
+  Mutation: { // field return type
+    addExchange: NexusGenRootTypes['Exchange'] | null; // Exchange
+  }
   Query: { // field return type
     exchanges: NexusGenRootTypes['Exchange'][]; // [Exchange!]!
     hello: string | null; // String
@@ -77,6 +81,9 @@ export interface NexusGenFieldTypeNames {
     lastPrice: 'Int'
     name: 'String'
   }
+  Mutation: { // field return type name
+    addExchange: 'Exchange'
+  }
   Query: { // field return type name
     exchanges: 'Exchange'
     hello: 'String'
@@ -84,6 +91,12 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    addExchange: { // args
+      lastPrice: number; // Int!
+      name: string; // String!
+    }
+  }
   Query: {
     exchanges: { // args
       id: number; // Int!
