@@ -2,9 +2,14 @@
 ### Do not make changes to this file directly
 
 
-"""A simple hello world type"""
-scalar Hello
+"""This represents an exchange and its information."""
+type Exchange {
+  id: Int
+  lastPrice: Int
+  name: String
+}
 
 type Query {
-  hello: Hello!
+  exchanges(id: Int!): [Exchange!]!
+  hello: String
 }

@@ -4,9 +4,22 @@
  */
 
 
+import type { Context } from "./api/context"
+import type { core, connectionPluginCore } from "nexus"
 
-
-
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    /**
+     * Adds a Relay-style connection to the type, with numerous options for configuration
+     *
+     * @see https://nexusjs.org/docs/plugins/connection
+     */
+    connectionField<FieldName extends string>(
+      fieldName: FieldName,
+      config: connectionPluginCore.ConnectionFieldConfig<TypeName, FieldName>
+    ): void
+  }
+}
 
 
 declare global {
@@ -25,10 +38,14 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
-  Hello: any
 }
 
 export interface NexusGenObjects {
+  Exchange: { // root type
+    id?: number | null; // Int
+    lastPrice?: number | null; // Int
+    name?: string | null; // String
+  }
   Query: {};
 }
 
@@ -43,18 +60,35 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Exchange: { // field return type
+    id: number | null; // Int
+    lastPrice: number | null; // Int
+    name: string | null; // String
+  }
   Query: { // field return type
-    hello: NexusGenScalars['Hello']; // Hello!
+    exchanges: NexusGenRootTypes['Exchange'][]; // [Exchange!]!
+    hello: string | null; // String
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  Exchange: { // field return type name
+    id: 'Int'
+    lastPrice: 'Int'
+    name: 'String'
+  }
   Query: { // field return type name
-    hello: 'Hello'
+    exchanges: 'Exchange'
+    hello: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
+  Query: {
+    exchanges: { // args
+      id: number; // Int!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -88,7 +122,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;
@@ -120,6 +154,7 @@ declare global {
   interface NexusGenPluginInputTypeConfig<TypeName extends string> {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
+    
   }
   interface NexusGenPluginInputFieldConfig<TypeName extends string, FieldName extends string> {
   }

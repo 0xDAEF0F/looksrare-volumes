@@ -1,15 +1,11 @@
-import { extendType, nonNull, objectType, scalarType } from 'nexus';
+import { extendType } from 'nexus';
 
-export const HelloType = scalarType({
-  name: 'Hello',
-  description: 'A simple hello world type',
-});
-
+// Sample Test Query
 export const Query = extendType({
   type: 'Query',
   definition(t) {
     t.field('hello', {
-      type: nonNull(HelloType),
+      type: 'String',
       resolve: () => 'Hello World!',
     });
   },
