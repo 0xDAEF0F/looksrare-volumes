@@ -4,7 +4,8 @@
 
 - GraphQL
 - Express
-- Firebase
+- MySQL
+- Prisma
 - Nexus (code-first approach to GQL)
 
 # Dev Tools
@@ -17,6 +18,6 @@
 
 - ESLINT
 - Add service account to .env
-- Connect Firebase DB
 - Add a pipeline check linting, etc
 - Run test automatically when modifying code
+- Docker compose fix to load envs correctly.
