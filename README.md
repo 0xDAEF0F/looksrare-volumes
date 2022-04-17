@@ -19,3 +19,4 @@
 - Add service account to .env
 - Connect Firebase DB
 - Add a pipeline check linting, etc
+- Run test automatically when modifying code
