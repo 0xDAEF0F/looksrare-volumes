@@ -1,9 +1,11 @@
-import { db, Db } from './db';
+import { PrismaClient } from '@prisma/client';
 
 export type Context = {
-  db: Db;
+  prisma: PrismaClient;
 };
 
-export const context = {
-  db,
+const prisma = new PrismaClient();
+
+export const context: Context = {
+  prisma: prisma,
 };

@@ -4,16 +4,15 @@
 
 """This represents an exchange and its information."""
 type Exchange {
-  id: Int
-  lastPrice: Int
-  name: String
+  id: Int!
+  name: String!
 }
 
 type Mutation {
-  addExchange(lastPrice: Int!, name: String!): Exchange
+  addExchange(name: String!): Exchange
 }
 
 type Query {
-  exchanges(id: Int!): [Exchange!]!
+  exchanges: [Exchange!]!
   hello: String
 }

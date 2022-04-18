@@ -1,51 +1,31 @@
-import {
-  objectType,
-  queryField,
-  list,
-  nonNull,
-  intArg,
-  stringArg,
-  extendType,
-} from 'nexus';
+import { objectType, queryField, list, nonNull, stringArg, mutationField } from 'nexus';
 
 export const Exchange = objectType({
   name: 'Exchange',
   description: 'This represents an exchange and its information.',
   definition(t) {
-    t.int('id');
-    t.string('name');
-    t.int('lastPrice');
+    t.nonNull.int('id');
+    t.nonNull.string('name');
   },
 });
 
 export const ExchangeQuery = queryField('exchanges', {
   // this looks funky
   type: nonNull(list(nonNull(Exchange))),
-  args: {
-    id: nonNull(intArg()),
-  },
   resolve: (_root, _args, ctx) => {
-    return ctx.db.exchanges.filter((e) => _args.id === e.id);
+    return ctx.prisma.exchange.findMany();
   },
 });
 
-export const AddExchange = extendType({
-  type: 'Mutation',
-  definition: (t) => {
-    t.field('addExchange', {
-      type: Exchange,
-      args: {
-        name: nonNull(stringArg()),
-        lastPrice: nonNull(intArg()),
-      },
-      resolve: (_root, args, ctx) => {
-        const newExchange = {
-          id: ctx.db.exchanges.length + 1,
-          name: args.name,
-          lastPrice: args.lastPrice,
-        };
-        ctx.db.exchanges.push(newExchange);
-        return newExchange;
+export const AddExchange = mutationField('addExchange', {
+  type: Exchange,
+  args: {
+    name: nonNull(stringArg()),
+  },
+  resolve: (_, args, ctx) => {
+    return ctx.prisma.exchange.create({
+      data: {
+        name: args.name,
       },
     });
   },
