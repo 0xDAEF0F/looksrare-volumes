@@ -45,6 +45,7 @@ export interface NexusGenObjects {
     id: number; // Int!
     name: string; // String!
     ticker: string; // String!
+    tokenAddress: string; // String!
     tokenCap?: number | null; // Int
     tokenSupply?: number | null; // Int
   }
@@ -67,6 +68,7 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     name: string; // String!
     ticker: string; // String!
+    tokenAddress: string; // String!
     tokenCap: number | null; // Int
     tokenSupply: number | null; // Int
   }
@@ -84,6 +86,7 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     name: 'String'
     ticker: 'String'
+    tokenAddress: 'String'
     tokenCap: 'Int'
     tokenSupply: 'Int'
   }
@@ -101,6 +104,7 @@ export interface NexusGenArgTypes {
     addExchange: { // args
       name: string; // String!
       ticker: string; // String!
+      tokenAddress: string; // String!
     }
   }
 }

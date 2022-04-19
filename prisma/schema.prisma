@@ -1,8 +1,9 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
+}
+
+generator nexusPrisma {
+  provider = "nexus-prisma"
 }
 
 datasource db {
@@ -10,15 +11,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-generator nexusPrisma {
-  provider = "nexus-prisma"
-}
-
 /// This represents an exchange
 model Exchange {
-  id          Int    @id @default(autoincrement())
-  name        String @unique
-  ticker      String @unique
-  tokenSupply Int?
-  tokenCap    Int?
+  id           Int    @id @default(autoincrement())
+  name         String @unique
+  ticker       String @unique
+  tokenAddress String @unique
+  tokenSupply  Int?
+  tokenCap     Int?
 }

@@ -27,18 +27,18 @@ type CryptoInfo = {
   };
 };
 
-let config: AxiosRequestConfig = {
-  method: 'GET',
-  url: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?id=',
-  headers: {
-    'X-CMC_PRO_API_KEY': process.env.COIN_MARKETCAP_API_KEY as string,
-  },
-};
+function getAxiosConfig(id: string) {
+  return {
+    method: 'GET',
+    url: `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?id=${id}`,
+    headers: {
+      'X-CMC_PRO_API_KEY': process.env.COIN_MARKETCAP_API_KEY as string,
+    },
+  } as AxiosRequestConfig;
+}
 
-// looks ID: 17081
 async function getCoinMarketCapData(assetId: string) {
-  config.url += assetId;
-  const [err, res] = await to(axios(config));
+  const [err, res] = await to(axios(getAxiosConfig(assetId)));
   if (err) throw new Error('Fail fetch.');
   const cryptoInfo = res.data as CryptoInfo;
   return {
@@ -47,6 +47,8 @@ async function getCoinMarketCapData(assetId: string) {
     price: cryptoInfo.data[assetId].quote.USD.price,
     volume_24h: cryptoInfo.data[assetId].quote.USD.volume_24h,
     percent_change_24h: cryptoInfo.data[assetId].quote.USD.percent_change_24h,
+    tokenAddress: cryptoInfo.data[assetId].platform.token_address,
+    ticker: cryptoInfo.data[assetId].symbol,
   };
 }
 
