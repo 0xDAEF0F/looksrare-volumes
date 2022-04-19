@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator nexusPrisma {
+  provider = "nexus-prisma"
+}
+
+/// This represents an exchange
 model Exchange {
   id   Int    @id @default(autoincrement())
   name String @unique

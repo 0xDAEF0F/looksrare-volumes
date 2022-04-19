@@ -2,7 +2,7 @@
 ### Do not make changes to this file directly
 
 
-"""This represents an exchange and its information."""
+"""This represents an exchange"""
 type Exchange {
   id: Int!
   name: String!
