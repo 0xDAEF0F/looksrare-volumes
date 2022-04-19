@@ -6,10 +6,13 @@
 type Exchange {
   id: Int!
   name: String!
+  ticker: String!
+  tokenCap: Int
+  tokenSupply: Int
 }
 
 type Mutation {
-  addExchange(name: String!): Exchange
+  addExchange(name: String!, ticker: String!): Exchange
 }
 
 type Query {

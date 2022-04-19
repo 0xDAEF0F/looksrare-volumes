@@ -44,6 +44,9 @@ export interface NexusGenObjects {
   Exchange: { // root type
     id: number; // Int!
     name: string; // String!
+    ticker: string; // String!
+    tokenCap?: number | null; // Int
+    tokenSupply?: number | null; // Int
   }
   Mutation: {};
   Query: {};
@@ -63,6 +66,9 @@ export interface NexusGenFieldTypes {
   Exchange: { // field return type
     id: number; // Int!
     name: string; // String!
+    ticker: string; // String!
+    tokenCap: number | null; // Int
+    tokenSupply: number | null; // Int
   }
   Mutation: { // field return type
     addExchange: NexusGenRootTypes['Exchange'] | null; // Exchange
@@ -77,6 +83,9 @@ export interface NexusGenFieldTypeNames {
   Exchange: { // field return type name
     id: 'Int'
     name: 'String'
+    ticker: 'String'
+    tokenCap: 'Int'
+    tokenSupply: 'Int'
   }
   Mutation: { // field return type name
     addExchange: 'Exchange'
@@ -91,6 +100,7 @@ export interface NexusGenArgTypes {
   Mutation: {
     addExchange: { // args
       name: string; // String!
+      ticker: string; // String!
     }
   }
 }

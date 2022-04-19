@@ -7,6 +7,9 @@ export const ExchangeObject = objectType({
   definition(t) {
     t.field(Exchange.id);
     t.field(Exchange.name);
+    t.field(Exchange.ticker);
+    t.field(Exchange.tokenCap);
+    t.field(Exchange.tokenSupply);
   },
 });
 
@@ -21,11 +24,13 @@ export const AddExchange = mutationField('addExchange', {
   type: ExchangeObject,
   args: {
     name: nonNull(stringArg()),
+    ticker: nonNull(stringArg()),
   },
   resolve: (_, args, ctx) => {
     return ctx.prisma.exchange.create({
       data: {
         name: args.name,
+        ticker: args.ticker,
       },
     });
   },
