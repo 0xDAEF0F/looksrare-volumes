@@ -19,6 +19,7 @@ async function main() {
         name: e.name,
         ticker: e.ticker,
         tokenAddress: e.tokenAddress,
+        tokenCap: e.tokenCap,
       },
     });
   });

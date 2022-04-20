@@ -49,6 +49,8 @@ async function getCoinMarketCapData(assetId: string) {
     percent_change_24h: cryptoInfo.data[assetId].quote.USD.percent_change_24h,
     tokenAddress: cryptoInfo.data[assetId].platform.token_address,
     ticker: cryptoInfo.data[assetId].symbol,
+    tokenCap: cryptoInfo.data[assetId].max_supply,
+    tokenSupply: cryptoInfo.data[assetId].total_supply,
   };
 }
 
