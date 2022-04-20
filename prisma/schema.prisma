@@ -13,10 +13,27 @@ datasource db {
 
 /// This represents an exchange
 model Exchange {
-  id           Int    @id @default(autoincrement())
-  name         String @unique
-  ticker       String @unique
-  tokenAddress String @unique
+  id           String        @id @default(cuid())
+  name         String        @unique
+  ticker       String        @unique
+  tokenAddress String        @unique
   tokenSupply  Int?
   tokenCap     Int?
+  dailyLogs    ExchangeLog[]
 }
+
+model ExchangeLog {
+  id          String    @id @default(cuid())
+  exchangeId  String
+  date        DateTime?
+  dailyVolume Float?
+  exchange    Exchange  @relation(fields: [exchangeId], references: [id])
+}
+
+// Fields to add to ExchangeLog
+// closingPrice      Float
+// openingPrice      Float
+// royaltyPayout     Float
+// profitPayout      Float
+// dailyUsers        Int
+// dailyTransactions Int
