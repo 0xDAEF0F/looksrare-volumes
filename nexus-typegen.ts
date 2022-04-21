@@ -42,7 +42,7 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Exchange: { // root type
-    id: number; // Int!
+    id: string; // ID!
     name: string; // String!
     ticker: string; // String!
     tokenAddress: string; // String!
@@ -65,7 +65,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Exchange: { // field return type
-    id: number; // Int!
+    id: string; // ID!
     name: string; // String!
     ticker: string; // String!
     tokenAddress: string; // String!
@@ -83,7 +83,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Exchange: { // field return type name
-    id: 'Int'
+    id: 'ID'
     name: 'String'
     ticker: 'String'
     tokenAddress: 'String'

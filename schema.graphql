@@ -4,7 +4,7 @@
 
 """This represents an exchange"""
 type Exchange {
-  id: Int!
+  id: ID!
   name: String!
   ticker: String!
   tokenAddress: String!
