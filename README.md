@@ -19,5 +19,5 @@
 - ESLINT
 - Add service account to .env
 - Add a pipeline check linting, etc
-- Run test automatically when modifying code
 - Docker compose fix to load envs correctly.
+- Relay compliant schema

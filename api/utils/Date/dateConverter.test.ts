@@ -1,4 +1,3 @@
-require('dotenv').config();
 import { it } from 'mocha';
 import { expect } from 'chai';
 import { roundDownUtcDate } from './dateConverter';

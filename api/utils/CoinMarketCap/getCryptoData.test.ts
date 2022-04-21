@@ -1,9 +1,11 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 import { it } from 'mocha';
 import { assert, expect } from 'chai';
 import { getCoinMarketCapData } from './getCryptoData';
 import type { CoinMarketCapParsedObject } from './getCryptoData';
 import to from 'await-to-js';
+
+dotenv.config();
 
 describe('CoinMarketCap', async () => {
   let looksData: Awaited<CoinMarketCapParsedObject>;
