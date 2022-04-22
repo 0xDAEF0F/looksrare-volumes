@@ -14,12 +14,14 @@ export type DailyDatasRes = {
 export type DailyDatas = Awaited<ReturnType<typeof getLooksExchangeDailyDatas>>
 
 // need foolproof way of passing date to accomodate LooksRare API
-export async function getLooksExchangeDailyDatas(date: string) {
+export async function getLooksExchangeDailyDatas(date: number) {
   const data = JSON.stringify({
     query: `{
       exchangeDailyDatas(where: { date: ${date} }) {
+        id
         date
         dailyUsers
+        dailyVolumeExcludingZeroFee
         dailyVolume
         dailyTransactions
       }

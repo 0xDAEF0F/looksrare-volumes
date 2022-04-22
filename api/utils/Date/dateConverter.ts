@@ -22,5 +22,5 @@ function treatDateObject(date: Date) {
   const dayOfDate = date.getDate()
   //   get GMT seconds (format that LooksRare understands)
   const looksDateFormat = Date.UTC(yearOfDate, monthOfDate, dayOfDate) / 1000
-  return String(looksDateFormat)
+  return looksDateFormat
 }

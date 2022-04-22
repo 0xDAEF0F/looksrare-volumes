@@ -7,14 +7,14 @@ import { roundDownUtcDate } from './dateConverter'
 describe('Date Treatment Module', () => {
   it('Works for a Date Object.', () => {
     const timestamp = roundDownUtcDate(new Date('04-18-2022'))
-    expect(timestamp).to.equal('1650240000')
+    expect(timestamp).to.equal(1650240000)
   })
   it('Works for a string.', () => {
     const timestamp = roundDownUtcDate('1650501592361')
-    expect(timestamp).to.equal('1650412800')
+    expect(timestamp).to.equal(1650412800)
   })
   it('Works for a number.', () => {
     const timestamp = roundDownUtcDate(1650501592361)
-    expect(timestamp).to.equal('1650412800')
+    expect(timestamp).to.equal(1650412800)
   })
 })

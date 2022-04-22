@@ -1,0 +1,13 @@
+watch-files:
+  # Changes in which files cause reruns
+  - 'test/**/*.ts'
+  - 'api/**/*.ts'
+require:
+  - 'ts-node/register'
+  - 'tsconfig-paths/register'
+extension:
+  - ['ts']
+spec:
+  # Where to look for tests
+  - 'api/**/*.test.ts'
+  - 'prisma/**/*.test.ts'
