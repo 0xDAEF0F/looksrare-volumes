@@ -7,7 +7,7 @@ import to from 'await-to-js'
 
 dotenv.config()
 
-describe('CoinMarketCap', async () => {
+describe('Get CoinMarketCap data.', async () => {
   let looksData: Awaited<CoinMarketCapParsedObject>
 
   before(async () => {
@@ -16,9 +16,6 @@ describe('CoinMarketCap', async () => {
     looksData = res
   })
 
-  it('Test for nullity.', () => {
-    expect(looksData).to.not.be.null
-  })
   it('Test for property name.', () => {
     expect(looksData).to.have.property('name', 'LooksRare')
   })

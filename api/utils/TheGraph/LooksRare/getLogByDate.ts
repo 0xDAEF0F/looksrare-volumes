@@ -1,20 +1,22 @@
 import to from 'await-to-js'
 import axios from 'axios'
 
-export type DailyDatasRes = {
+export type DailyDatasAxiosRes = {
   data: {
     exchangeDailyDatas: {
+      id: string
       date: string
       dailyUsers: string
+      dailyVolumeExcludingZeroFee: string
       dailyVolume: string
       dailyTransactions: string
     }[]
   }
 }
-export type DailyDatas = Awaited<ReturnType<typeof getLooksExchangeDailyDatas>>
+export type DailyDatas = Awaited<ReturnType<typeof getLooksLogsByDate>>
 
 // need foolproof way of passing date to accomodate LooksRare API
-export async function getLooksExchangeDailyDatas(date: number) {
+export async function getLooksLogsByDate(date: number) {
   const data = JSON.stringify({
     query: `{
       exchangeDailyDatas(where: { date: ${date} }) {
@@ -26,11 +28,10 @@ export async function getLooksExchangeDailyDatas(date: number) {
         dailyTransactions
       }
     }`,
-    variables: {},
   })
 
   const [err, res] = await to(
-    axios.post<DailyDatasRes>(
+    axios.post<DailyDatasAxiosRes>(
       'https://api.thegraph.com/subgraphs/name/looksrare/exchange',
       data
     )

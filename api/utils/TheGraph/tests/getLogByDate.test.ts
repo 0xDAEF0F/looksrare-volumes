@@ -2,13 +2,14 @@ import dotenv from 'dotenv'
 import { it } from 'mocha'
 import { assert, expect } from 'chai'
 import to from 'await-to-js'
-import { getLooksExchangeDailyDatas } from './getLooksDailyLogs'
+import { getLooksLogsByDate } from '../LooksRare/getLogByDate'
+import { roundDownUtcDate } from 'api/utils/Date/dateConverter'
 
 dotenv.config()
 
-describe('Query LooksRare Subgraph Daily Datas', () => {
+describe('Query LooksRare Daily Log By Date.', () => {
   it('Expect object to not be null.', async () => {
-    const [err, res] = await to(getLooksExchangeDailyDatas(1650412800))
+    const [err, res] = await to(getLooksLogsByDate(roundDownUtcDate(Date.now())))
     if (err) assert.fail(err.message)
     expect(res).to.not.be.null
   })
