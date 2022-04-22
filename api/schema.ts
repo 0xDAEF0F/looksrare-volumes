@@ -1,6 +1,6 @@
-import { connectionPlugin, makeSchema } from 'nexus';
-import { join } from 'path';
-import * as types from './graphql';
+import { connectionPlugin, makeSchema } from 'nexus'
+import { join } from 'path'
+import * as types from './graphql'
 
 export const schema = makeSchema({
   types: types,
@@ -13,4 +13,4 @@ export const schema = makeSchema({
     export: 'Context',
   },
   plugins: [connectionPlugin()],
-});
+})

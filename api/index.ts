@@ -1,12 +1,12 @@
 // Web server
-import express from 'express';
+import express from 'express'
 // GraphQL
-import { graphqlHTTP } from 'express-graphql';
-import { schema } from './schema';
-import { context } from './context';
+import { graphqlHTTP } from 'express-graphql'
+import { schema } from './schema'
+import { context } from './context'
 
 // GraphQL Endpoint MW
-const app = express();
+const app = express()
 app.use(
   '/graphql',
   graphqlHTTP({
@@ -14,13 +14,13 @@ app.use(
     graphiql: true,
     context: context,
   })
-);
+)
 
 app.get('/', (_, res) => {
-  res.send('Hello World!');
-});
+  res.send('Hello World!')
+})
 
 // Start the server
 app.listen(3000, () => {
-  console.log('Listening on http://localhost:3000/graphql');
-});
+  console.log('Listening on http://localhost:3000/graphql')
+})

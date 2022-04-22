@@ -1,4 +1,4 @@
-import { extendType } from 'nexus';
+import { extendType } from 'nexus'
 
 // Sample Test Query
 export const Query = extendType({
@@ -7,6 +7,6 @@ export const Query = extendType({
     t.field('hello', {
       type: 'String',
       resolve: () => 'Hello World!',
-    });
+    })
   },
-});
+})

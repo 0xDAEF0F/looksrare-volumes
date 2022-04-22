@@ -1,31 +1,31 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { to } from 'await-to-js';
+import axios, { AxiosRequestConfig } from 'axios'
+import { to } from 'await-to-js'
 
 type CryptoInfo = {
   status: {
-    timestamp: string;
-  };
+    timestamp: string
+  }
   data: {
     [id: string]: {
-      id: number;
-      name: string;
-      symbol: string;
-      max_supply: number;
-      total_supply: number;
+      id: number
+      name: string
+      symbol: string
+      max_supply: number
+      total_supply: number
       platform: {
-        token_address: string;
-      };
-      last_updated: string;
+        token_address: string
+      }
+      last_updated: string
       quote: {
         USD: {
-          price: number;
-          volume_24h: number;
-          percent_change_24h: number;
-        };
-      };
-    };
-  };
-};
+          price: number
+          volume_24h: number
+          percent_change_24h: number
+        }
+      }
+    }
+  }
+}
 
 function getAxiosConfig(id: string) {
   return {
@@ -34,13 +34,13 @@ function getAxiosConfig(id: string) {
     headers: {
       'X-CMC_PRO_API_KEY': process.env.COIN_MARKETCAP_API_KEY as string,
     },
-  } as AxiosRequestConfig;
+  } as AxiosRequestConfig
 }
 
 async function getCoinMarketCapData(assetId: string) {
-  const [err, res] = await to(axios(getAxiosConfig(assetId)));
-  if (err) throw new Error('Fail fetch.');
-  const cryptoInfo = res.data as CryptoInfo;
+  const [err, res] = await to(axios(getAxiosConfig(assetId)))
+  if (err) throw new Error('Fail fetch.')
+  const cryptoInfo = res.data as CryptoInfo
   return {
     name: cryptoInfo.data[assetId].name,
     timestamp: cryptoInfo.status.timestamp,
@@ -51,8 +51,8 @@ async function getCoinMarketCapData(assetId: string) {
     ticker: cryptoInfo.data[assetId].symbol,
     tokenCap: cryptoInfo.data[assetId].max_supply,
     tokenSupply: cryptoInfo.data[assetId].total_supply,
-  };
+  }
 }
 
-export type CoinMarketCapParsedObject = ReturnType<typeof getCoinMarketCapData>;
-export { getCoinMarketCapData };
+export type CoinMarketCapParsedObject = ReturnType<typeof getCoinMarketCapData>
+export { getCoinMarketCapData }
