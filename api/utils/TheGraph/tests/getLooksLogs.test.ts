@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import { it } from 'mocha'
 import { assert, expect } from 'chai'
 import to from 'await-to-js'
-import { getLastXDaysLogs } from '../LooksRare/getLastLogs'
+import { getLastXDaysLogs } from '../LooksRare/getLastXLogs'
 import { roundDownUtcDate } from 'api/utils/Date/dateConverter'
 
 dotenv.config()

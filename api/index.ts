@@ -4,6 +4,10 @@ import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
 import { schema } from './schema'
 import { context } from './context'
+import { ToadScheduler } from 'toad-scheduler'
+import { job1 } from './cron/insertLatestLooksExchangeLog'
+
+const scheduler = new ToadScheduler()
 
 // GraphQL Endpoint MW
 const app = express()
@@ -22,5 +26,6 @@ app.get('/', (_, res) => {
 
 // Start the server
 app.listen(3000, () => {
+  scheduler.addSimpleIntervalJob(job1)
   console.log('Listening on http://localhost:3000/graphql')
 })

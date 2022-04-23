@@ -14,3 +14,7 @@ export function getLastXDaysLogs(days: DaysToQuote) {
     return getLooksLogsByDate(a)
   })
 }
+
+export function getLastDayExchangeLog() {
+  return getLooksLogsByDate(roundDownUtcDate(Date.now()))
+}

@@ -15,7 +15,6 @@ export type DailyDatasAxiosRes = {
 }
 export type DailyDatas = Awaited<ReturnType<typeof getLooksLogsByDate>>
 
-// need foolproof way of passing date to accomodate LooksRare API
 export async function getLooksLogsByDate(date: number) {
   const data = JSON.stringify({
     query: `{
