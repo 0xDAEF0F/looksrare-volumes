@@ -1,5 +1,5 @@
 import { objectType, queryField, list, nonNull, stringArg, mutationField } from 'nexus'
-import { Exchange } from 'nexus-prisma'
+import { Exchange, ExchangeLog } from 'nexus-prisma'
 
 export const ExchangeObject = objectType({
   name: Exchange.$name,
@@ -11,6 +11,19 @@ export const ExchangeObject = objectType({
     t.field(Exchange.tokenAddress)
     t.field(Exchange.tokenCap)
     t.field(Exchange.tokenSupply)
+  },
+})
+
+// Not finished GQL object type
+export const ExchangeLogObject = objectType({
+  name: ExchangeLog.$name,
+  description: ExchangeLog.$description,
+  definition: (t) => {
+    t.field(ExchangeLog.id)
+    t.field(ExchangeLog.dailyVolume)
+    t.field(ExchangeLog.exchangeId)
+    // need to implement a date scalar
+    // t.field(ExchangeLog.date)
   },
 })
 

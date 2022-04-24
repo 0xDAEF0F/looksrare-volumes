@@ -12,6 +12,12 @@ type Exchange {
   tokenSupply: Int
 }
 
+type ExchangeLog {
+  dailyVolume: String!
+  exchangeId: String!
+  id: ID!
+}
+
 type Mutation {
   addExchange(name: String!, ticker: String!, tokenAddress: String!): Exchange
 }

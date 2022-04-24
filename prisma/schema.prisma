@@ -23,11 +23,13 @@ model Exchange {
 }
 
 model ExchangeLog {
-  id          String    @id @default(cuid())
-  exchangeId  String
-  date        DateTime?
-  dailyVolume Float?
-  exchange    Exchange  @relation(fields: [exchangeId], references: [id])
+  id                String   @id @default(cuid())
+  exchangeId        String
+  date              String
+  dailyVolume       String
+  dailyUsers        String
+  dailyTransactions String
+  exchange          Exchange @relation(fields: [exchangeId], references: [id])
 }
 
 // Fields to add to ExchangeLog
@@ -35,5 +37,3 @@ model ExchangeLog {
 // openingPrice      Float
 // royaltyPayout     Float
 // profitPayout      Float
-// dailyUsers        Int
-// dailyTransactions Int

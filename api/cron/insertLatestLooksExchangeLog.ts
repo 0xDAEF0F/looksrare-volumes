@@ -1,18 +1,29 @@
 import { SimpleIntervalJob, AsyncTask } from 'toad-scheduler'
-// import { PrismaClient } from '@prisma/client'
-// import { getLastDayExchangeLog } from 'api/utils/TheGraph/LooksRare/getLastXLogs'
+import { PrismaClient } from '@prisma/client'
+import { getLastDayExchangeLog } from 'api/utils/TheGraph/LooksRare/getLastXLogs'
 
-// const prisma = new PrismaClient()
+const prisma = new PrismaClient()
 
 const task = new AsyncTask(
   'Update DB for latest exchange information',
-  () => {
-    return new Promise((res) =>
-      setTimeout(() => {
-        console.log('Running Job.')
-        res()
-      }, 0)
-    )
+  async () => {
+    const looksLogDay = await getLastDayExchangeLog()
+    // need exchangeId for LooksRare to do this.
+    await prisma.exchange.update({
+      where: {
+        name: 'LooksRare',
+      },
+      data: {
+        dailyLogs: {
+          create: {
+            date: '2022-04-23',
+            dailyTransactions: looksLogDay.dailyTransactions,
+            dailyUsers: looksLogDay.dailyUsers,
+            dailyVolume: looksLogDay.dailyVolumeExcludingZeroFee,
+          },
+        },
+      },
+    })
   },
   (err: Error) => {
     console.log(err)
@@ -20,7 +31,7 @@ const task = new AsyncTask(
 )
 
 export const job1 = new SimpleIntervalJob(
-  { seconds: 30, runImmediately: true },
+  { seconds: 10, runImmediately: true },
   task,
   'id_1'
 )

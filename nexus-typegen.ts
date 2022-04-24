@@ -49,6 +49,11 @@ export interface NexusGenObjects {
     tokenCap?: number | null; // Int
     tokenSupply?: number | null; // Int
   }
+  ExchangeLog: { // root type
+    dailyVolume: string; // String!
+    exchangeId: string; // String!
+    id: string; // ID!
+  }
   Mutation: {};
   Query: {};
 }
@@ -72,6 +77,11 @@ export interface NexusGenFieldTypes {
     tokenCap: number | null; // Int
     tokenSupply: number | null; // Int
   }
+  ExchangeLog: { // field return type
+    dailyVolume: string; // String!
+    exchangeId: string; // String!
+    id: string; // ID!
+  }
   Mutation: { // field return type
     addExchange: NexusGenRootTypes['Exchange'] | null; // Exchange
   }
@@ -89,6 +99,11 @@ export interface NexusGenFieldTypeNames {
     tokenAddress: 'String'
     tokenCap: 'Int'
     tokenSupply: 'Int'
+  }
+  ExchangeLog: { // field return type name
+    dailyVolume: 'String'
+    exchangeId: 'String'
+    id: 'ID'
   }
   Mutation: { // field return type name
     addExchange: 'Exchange'

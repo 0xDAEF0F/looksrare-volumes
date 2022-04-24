@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "ts-node-dev --respawn --inspect --transpile-only --exit-child --watch src api/index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --inspect --transpile-only --exit-child --watch src api/index.ts",
     "run-container": "docker run --name family_db -e MYSQL_ROOT_PASSWORD=1234 -p 3306:3306 -d mysql",
     "test": "mocha",
     "test:watch": "mocha --watch",
