@@ -8,18 +8,31 @@ const task = new AsyncTask(
   'Update DB for latest exchange information',
   async () => {
     const looksLogDay = await getLastDayExchangeLog()
-    // need exchangeId for LooksRare to do this.
+    const lastLooksLog = await prisma.exchangeLog.findFirst({
+      where: { date: '2022-04-23' },
+    })
     await prisma.exchange.update({
       where: {
         name: 'LooksRare',
       },
       data: {
         dailyLogs: {
-          create: {
-            date: '2022-04-23',
-            dailyTransactions: looksLogDay.dailyTransactions,
-            dailyUsers: looksLogDay.dailyUsers,
-            dailyVolume: looksLogDay.dailyVolumeExcludingZeroFee,
+          upsert: {
+            where: {
+              id: lastLooksLog?.id || '',
+            },
+            create: {
+              date: '2022-04-23',
+              dailyTransactions: looksLogDay.dailyTransactions,
+              dailyUsers: looksLogDay.dailyUsers,
+              dailyVolume: looksLogDay.dailyVolumeExcludingZeroFee,
+            },
+            update: {
+              date: '2022-04-23',
+              dailyTransactions: looksLogDay.dailyTransactions,
+              dailyUsers: looksLogDay.dailyUsers,
+              dailyVolume: looksLogDay.dailyVolumeExcludingZeroFee,
+            },
           },
         },
       },
@@ -31,7 +44,7 @@ const task = new AsyncTask(
 )
 
 export const job1 = new SimpleIntervalJob(
-  { seconds: 10, runImmediately: true },
+  { seconds: 60, runImmediately: true },
   task,
   'id_1'
 )
