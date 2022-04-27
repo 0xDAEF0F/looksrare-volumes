@@ -46,8 +46,8 @@ export interface NexusGenObjects {
     name: string; // String!
     ticker: string; // String!
     tokenAddress: string; // String!
-    tokenCap?: number | null; // Int
-    tokenSupply?: number | null; // Int
+    tokenCap: number; // Int!
+    tokenSupply: number; // Float!
   }
   ExchangeLog: { // root type
     dailyVolume: string; // String!
@@ -74,8 +74,8 @@ export interface NexusGenFieldTypes {
     name: string; // String!
     ticker: string; // String!
     tokenAddress: string; // String!
-    tokenCap: number | null; // Int
-    tokenSupply: number | null; // Int
+    tokenCap: number; // Int!
+    tokenSupply: number; // Float!
   }
   ExchangeLog: { // field return type
     dailyVolume: string; // String!
@@ -98,7 +98,7 @@ export interface NexusGenFieldTypeNames {
     ticker: 'String'
     tokenAddress: 'String'
     tokenCap: 'Int'
-    tokenSupply: 'Int'
+    tokenSupply: 'Float'
   }
   ExchangeLog: { // field return type name
     dailyVolume: 'String'

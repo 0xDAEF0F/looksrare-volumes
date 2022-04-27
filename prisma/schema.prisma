@@ -17,23 +17,22 @@ model Exchange {
   name         String        @unique
   ticker       String        @unique
   tokenAddress String        @unique
-  tokenSupply  Int?
-  tokenCap     Int?
+  tokenSupply  Float
+  tokenCap     Int
   dailyLogs    ExchangeLog[]
 }
 
+/// Each exchange emits daily logs indexed here.
 model ExchangeLog {
-  id                String   @id @default(cuid())
-  exchangeId        String
-  date              String
-  dailyVolume       String
-  dailyUsers        String
-  dailyTransactions String
-  exchange          Exchange @relation(fields: [exchangeId], references: [id])
+  id                          String   @id @default(cuid())
+  exchangeId                  String
+  date                        String
+  dailyVolume                 String
+  /// Excluding wash-trading.
+  dailyVolumeExcludingZeroFee String?
+  dailyUsers                  String
+  dailyTransactions           String
+  /// Multiple APIs will be called for this data.
+  price                       Int?
+  exchange                    Exchange @relation(fields: [exchangeId], references: [id])
 }
-
-// Fields to add to ExchangeLog
-// closingPrice      Float
-// openingPrice      Float
-// royaltyPayout     Float
-// profitPayout      Float

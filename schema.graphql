@@ -8,10 +8,11 @@ type Exchange {
   name: String!
   ticker: String!
   tokenAddress: String!
-  tokenCap: Int
-  tokenSupply: Int
+  tokenCap: Int!
+  tokenSupply: Float!
 }
 
+"""Each exchange emits daily logs indexed here."""
 type ExchangeLog {
   dailyVolume: String!
   exchangeId: String!
