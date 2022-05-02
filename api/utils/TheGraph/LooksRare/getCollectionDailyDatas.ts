@@ -1,5 +1,4 @@
 import axios from 'axios'
-import to from 'await-to-js'
 import { roundDownUtcDate } from 'api/utils/Date/dateConverter'
 
 type ExchangeDailyDataAxiosRes = {
@@ -49,12 +48,7 @@ function dataConstructor(date: string) {
 }
 
 export default async function getCollectionDailyDatas<T>(date: T) {
-  const [err, res] = await to(
-    axios.post<ExchangeDailyDataAxiosRes>(
-      looksURL,
-      dataConstructor(String(roundDownUtcDate(date)))
-    )
-  )
-  if (err) throw new Error('aaa')
+  const queryStr = dataConstructor(String(roundDownUtcDate(date)))
+  const res = await axios.post<ExchangeDailyDataAxiosRes>(looksURL, queryStr)
   return res.data.data.collectionDailyDatas
 }

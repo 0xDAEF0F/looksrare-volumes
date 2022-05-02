@@ -29,7 +29,7 @@ model ExchangeLog {
   date                        String
   dailyVolume                 String
   /// Excluding wash-trading.
-  dailyVolumeExcludingZeroFee String?
+  dailyVolumeExcludingZeroFee Float?
   dailyUsers                  String
   dailyTransactions           String
   /// Multiple APIs will be called for this data.
