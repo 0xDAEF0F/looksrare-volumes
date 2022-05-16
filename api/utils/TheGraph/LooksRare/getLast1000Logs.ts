@@ -1,4 +1,4 @@
-import { roundDownUtcDate } from 'api/utils/Date/dateConverter'
+import { dateToLooksUnixTimestamp } from 'api/utils/Date/dateConverter'
 import to from 'await-to-js'
 import axios from 'axios'
 import { DailyDatasAxiosRes } from './getLogByDate'
@@ -9,7 +9,7 @@ export async function getAllLooksLogs() {
     exchangeDailyDatas(orderDirection: desc,
       orderBy: date, 
       first: 1000,
-      where: {date_lte: ${roundDownUtcDate(Date.now())}}) {
+      where: {date_lte: ${dateToLooksUnixTimestamp(Date.now())}}) {
       id
       date
       dailyUsers

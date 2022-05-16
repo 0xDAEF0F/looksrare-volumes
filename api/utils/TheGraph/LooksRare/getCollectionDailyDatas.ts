@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { roundDownUtcDate } from 'api/utils/Date/dateConverter'
 
 type ExchangeDailyDataAxiosRes = {
   data: {
@@ -20,7 +19,7 @@ type ExchangeDailyDataAxiosRes = {
 
 const looksURL = 'https://api.thegraph.com/subgraphs/name/looksrare/exchange'
 
-function dataConstructor(date: string) {
+function dataConstructor(date: number) {
   return JSON.stringify({
     query: `query($date: BigInt!){
   collectionDailyDatas(
@@ -47,8 +46,8 @@ function dataConstructor(date: string) {
   })
 }
 
-export default async function getCollectionDailyDatas<T>(date: T) {
-  const queryStr = dataConstructor(String(roundDownUtcDate(date)))
+export default async function getCollectionDailyDatas(looksTimestamp: number) {
+  const queryStr = dataConstructor(looksTimestamp)
   const res = await axios.post<ExchangeDailyDataAxiosRes>(looksURL, queryStr)
   return res.data.data.collectionDailyDatas
 }

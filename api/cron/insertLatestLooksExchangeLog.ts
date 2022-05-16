@@ -1,14 +1,16 @@
 import { SimpleIntervalJob, AsyncTask } from 'toad-scheduler'
 import { PrismaClient } from '@prisma/client'
 import { getLastDayExchangeLog } from 'api/utils/TheGraph/LooksRare/getLastXLogs'
-import { roundDownUtcDate } from 'api/utils/Date/dateConverter'
+import { dateToLooksUnixTimestamp } from 'api/utils/Date/dateConverter'
 
 const prisma = new PrismaClient()
 
 const task = new AsyncTask(
   'Update DB for latest exchange information',
   async () => {
-    const todayISOString = new Date(roundDownUtcDate(new Date()) * 1000).toISOString()
+    const todayISOString = new Date(
+      dateToLooksUnixTimestamp(new Date()) * 1000
+    ).toISOString()
     const looksLogDay = await getLastDayExchangeLog()
     const lastLooksLog = await prisma.exchangeLog.findFirst({
       where: { date: todayISOString },
