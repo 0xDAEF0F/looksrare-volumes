@@ -1,4 +1,4 @@
-import { objectType, queryField, list, nonNull, stringArg, mutationField } from 'nexus'
+import { objectType, queryField, nonNull, stringArg } from 'nexus'
 import { Exchange, ExchangeLog } from 'nexus-prisma'
 
 export const ExchangeObject = objectType({
@@ -11,42 +11,43 @@ export const ExchangeObject = objectType({
     t.field(Exchange.tokenAddress)
     t.field(Exchange.tokenCap)
     t.field(Exchange.tokenSupply)
+    t.list.field('dailyLogs', {
+      type: nonNull(ExchangeLogObject),
+      resolve: async (_, __, ctx) => {
+        const dailyLogs = await ctx.prisma.exchange.findUnique({
+          where: { name: _.name },
+          select: {
+            dailyLogs: true,
+          },
+        })
+        if (dailyLogs) return dailyLogs.dailyLogs
+        return null
+      },
+    })
   },
 })
 
-// Not finished GQL object type
 export const ExchangeLogObject = objectType({
   name: ExchangeLog.$name,
   description: ExchangeLog.$description,
   definition: (t) => {
     t.field(ExchangeLog.id)
+    t.field(ExchangeLog.date)
     t.field(ExchangeLog.dailyVolume)
+    t.field(ExchangeLog.dailyVolumeExcludingZeroFee)
     t.field(ExchangeLog.exchangeId)
-    // need to implement a date scalar
-    // t.field(ExchangeLog.date)
   },
 })
 
-export const ExchangeQuery = queryField('exchanges', {
-  type: nonNull(list(nonNull(ExchangeObject))),
-  resolve: (_root, _args, ctx) => {
-    return ctx.prisma.exchange.findMany()
-  },
-})
-
-export const AddExchange = mutationField('addExchange', {
+export const ExchangeQuery = queryField('exchange', {
   type: ExchangeObject,
   args: {
-    name: nonNull(stringArg()),
     ticker: nonNull(stringArg()),
-    tokenAddress: nonNull(stringArg()),
   },
-  resolve: (_, args, ctx) => {
-    return ctx.prisma.exchange.create({
-      data: {
-        name: args.name,
-        ticker: args.ticker,
-        tokenAddress: args.tokenAddress,
+  resolve: (_root, _args, ctx) => {
+    return ctx.prisma.exchange.findUnique({
+      where: {
+        ticker: _args.ticker,
       },
     })
   },

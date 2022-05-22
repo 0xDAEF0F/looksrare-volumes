@@ -4,6 +4,7 @@
 
 """This represents an exchange"""
 type Exchange {
+  dailyLogs: [ExchangeLog!]
   id: ID!
   name: String!
   ticker: String!
@@ -15,15 +16,15 @@ type Exchange {
 """Each exchange emits daily logs indexed here."""
 type ExchangeLog {
   dailyVolume: String!
+
+  """Excluding wash-trading."""
+  dailyVolumeExcludingZeroFee: Float
+  date: String!
   exchangeId: String!
   id: ID!
 }
 
-type Mutation {
-  addExchange(name: String!, ticker: String!, tokenAddress: String!): Exchange
-}
-
 type Query {
-  exchanges: [Exchange!]!
+  exchange(ticker: String!): Exchange
   hello: String
 }

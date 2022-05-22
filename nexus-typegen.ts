@@ -38,10 +38,11 @@ export interface NexusGenObjects {
   }
   ExchangeLog: { // root type
     dailyVolume: string; // String!
+    dailyVolumeExcludingZeroFee?: number | null; // Float
+    date: string; // String!
     exchangeId: string; // String!
     id: string; // ID!
   }
-  Mutation: {};
   Query: {};
 }
 
@@ -57,6 +58,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Exchange: { // field return type
+    dailyLogs: NexusGenRootTypes['ExchangeLog'][] | null; // [ExchangeLog!]
     id: string; // ID!
     name: string; // String!
     ticker: string; // String!
@@ -66,20 +68,20 @@ export interface NexusGenFieldTypes {
   }
   ExchangeLog: { // field return type
     dailyVolume: string; // String!
+    dailyVolumeExcludingZeroFee: number | null; // Float
+    date: string; // String!
     exchangeId: string; // String!
     id: string; // ID!
   }
-  Mutation: { // field return type
-    addExchange: NexusGenRootTypes['Exchange'] | null; // Exchange
-  }
   Query: { // field return type
-    exchanges: NexusGenRootTypes['Exchange'][]; // [Exchange!]!
+    exchange: NexusGenRootTypes['Exchange'] | null; // Exchange
     hello: string | null; // String
   }
 }
 
 export interface NexusGenFieldTypeNames {
   Exchange: { // field return type name
+    dailyLogs: 'ExchangeLog'
     id: 'ID'
     name: 'String'
     ticker: 'String'
@@ -89,24 +91,21 @@ export interface NexusGenFieldTypeNames {
   }
   ExchangeLog: { // field return type name
     dailyVolume: 'String'
+    dailyVolumeExcludingZeroFee: 'Float'
+    date: 'String'
     exchangeId: 'String'
     id: 'ID'
   }
-  Mutation: { // field return type name
-    addExchange: 'Exchange'
-  }
   Query: { // field return type name
-    exchanges: 'Exchange'
+    exchange: 'Exchange'
     hello: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
-  Mutation: {
-    addExchange: { // args
-      name: string; // String!
+  Query: {
+    exchange: { // args
       ticker: string; // String!
-      tokenAddress: string; // String!
     }
   }
 }
