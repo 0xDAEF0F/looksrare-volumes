@@ -25,7 +25,7 @@ app.get('/', (_, res) => {
 })
 
 // Start the server
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   scheduler.addSimpleIntervalJob(job1)
-  console.log('Listening on http://localhost:3000/graphql')
+  console.log(`Listening on http://localhost:${process.env.PORT}/graphql`)
 })

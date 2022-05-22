@@ -11,5 +11,17 @@ export function dateToLooksUnixTimestamp(date: Date) {
 }
 
 export function looksUnixTimestampToDate(timestamp: number) {
-  return new Date(timestamp * 1000)
+  return new Date(timestamp * 1000).toISOString()
+}
+
+export function nowZeroedToDbFormat(date: Date) {
+  const yearOfDate = date.getFullYear()
+  const monthOfDate = date.getMonth()
+  const dayOfDate = date.getDate()
+
+  const dateZeroed = new Date(yearOfDate, monthOfDate, dayOfDate)
+
+  // set utc to 0
+  dateZeroed.setUTCHours(0)
+  return dateZeroed.toISOString()
 }

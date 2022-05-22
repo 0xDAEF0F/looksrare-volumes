@@ -9,7 +9,7 @@ export async function getAllLooksLogs() {
     exchangeDailyDatas(orderDirection: desc,
       orderBy: date, 
       first: 1000,
-      where: {date_lte: ${dateToLooksUnixTimestamp(Date.now())}}) {
+      where: {date_lte: ${dateToLooksUnixTimestamp(new Date())}}) {
       id
       date
       dailyUsers

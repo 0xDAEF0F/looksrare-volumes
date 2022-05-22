@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { looksUnixTimestampToDate } from 'api/utils/Date/dateConverter'
 import { getAllLooksLogs } from 'api/utils/TheGraph/LooksRare/getLast1000Logs'
 
 const prisma = new PrismaClient()
@@ -9,8 +10,8 @@ export default async function seedExchangeDailyDatas() {
   // need to modify dates to what our db understands.
   const exchangeLogs = rawLogs.map((x) => {
     return {
-      date: new Date(Number(x.date) * 1000).toISOString(),
-      dailyVolume: x.dailyVolume,
+      date: looksUnixTimestampToDate(Number(x.date)),
+      dailyVolume: Number(x.dailyVolume).toFixed(2),
       dailyUsers: x.dailyUsers,
       dailyTransactions: x.dailyTransactions,
     }

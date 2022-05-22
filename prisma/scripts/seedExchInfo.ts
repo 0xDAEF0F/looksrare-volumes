@@ -14,7 +14,7 @@ const tokenObjectsPromise = Object.values(coinMarketCapTokensMapping).map((id) =
 
 export default async function seedExchangeInfo() {
   const exchangesToSeed = await Promise.all(tokenObjectsPromise)
-  const aaaa = exchangesToSeed.map((e) => {
+  const exchanges = exchangesToSeed.map((e) => {
     return {
       name: e.name,
       ticker: e.ticker,
@@ -24,6 +24,6 @@ export default async function seedExchangeInfo() {
     }
   })
   return await prisma.exchange.createMany({
-    data: aaaa,
+    data: exchanges,
   })
 }
