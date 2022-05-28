@@ -4,7 +4,7 @@
 export function dateToLooksUnixTimestamp(date: Date) {
   const yearOfDate = date.getFullYear()
   const monthOfDate = date.getMonth()
-  const dayOfDate = date.getDate()
+  const dayOfDate = date.getUTCDate()
   //   get GMT seconds (format that LooksRare understands)
   const looksDateFormat = Date.UTC(yearOfDate, monthOfDate, dayOfDate) / 1000
   return looksDateFormat
