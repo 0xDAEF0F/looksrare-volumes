@@ -1,4 +1,4 @@
-import { objectType, queryField, nonNull, stringArg } from 'nexus'
+import { objectType, queryField, nonNull, stringArg, intArg } from 'nexus'
 import { Exchange as ExchangeModel, ExchangeLog as ExchangeLogModel } from 'nexus-prisma'
 
 export const Exchange = objectType({
@@ -52,5 +52,40 @@ export const ExchangeQuery = queryField('exchange', {
         ticker: _args.ticker,
       },
     })
+  },
+})
+
+export const VolumeByMonth = objectType({
+  name: 'VolumeByMonth',
+  definition: (t) => {
+    t.float('allVolume')
+    t.float('volumeExcludingZeroFee')
+  },
+})
+
+export const GetVolume = queryField('volume', {
+  type: VolumeByMonth,
+  args: {
+    month: nonNull(intArg({ default: new Date().getUTCMonth() })),
+    year: nonNull(intArg({ default: new Date().getUTCFullYear() })),
+  },
+  resolve: async (_root, args, ctx) => {
+    const initialDate = new Date(args.year, args.month).toISOString()
+    const endDate = new Date(args.year, args.month + 1).toISOString()
+    const matchingResults = await ctx.prisma.exchangeLog.findMany({
+      where: {
+        date: {
+          gte: initialDate,
+          lt: endDate,
+        },
+      },
+    })
+    return {
+      allVolume: matchingResults.reduce((acc, curr) => Number(curr.dailyVolume) + acc, 0),
+      volumeExcludingZeroFee: matchingResults.reduce(
+        (acc, curr) => Number(curr.dailyVolumeExcludingZeroFee) + acc,
+        0
+      ),
+    }
   },
 })

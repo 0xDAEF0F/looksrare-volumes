@@ -35,4 +35,6 @@ model ExchangeLog {
   dailyTransactions           String
   priceHigh                   Float?
   priceLow                    Float?
+  ethPriceHigh                Float?
+  ethPriceLow                 Float?
 }

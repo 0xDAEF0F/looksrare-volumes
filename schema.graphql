@@ -2,7 +2,7 @@
 ### Do not make changes to this file directly
 
 
-"""This represents an exchange"""
+"""LooksRare Exchange"""
 type Exchange {
   dailyLogs: [ExchangeLog!]
   id: ID!
@@ -13,7 +13,7 @@ type Exchange {
   tokenSupply: Float!
 }
 
-"""Each exchange emits daily logs indexed here."""
+"""LooksRare daily log activities"""
 type ExchangeLog {
   dailyVolume: String!
 
@@ -29,4 +29,10 @@ type ExchangeLog {
 type Query {
   exchange(ticker: String!): Exchange
   hello: String
+  volume(month: Int! = 4, year: Int! = 2022): VolumeByMonth
+}
+
+type VolumeByMonth {
+  allVolume: Float
+  volumeExcludingZeroFee: Float
 }

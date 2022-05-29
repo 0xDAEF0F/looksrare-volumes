@@ -46,6 +46,10 @@ export interface NexusGenObjects {
     priceLow?: number | null; // Float
   }
   Query: {};
+  VolumeByMonth: { // root type
+    allVolume?: number | null; // Float
+    volumeExcludingZeroFee?: number | null; // Float
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -80,6 +84,11 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     exchange: NexusGenRootTypes['Exchange'] | null; // Exchange
     hello: string | null; // String
+    volume: NexusGenRootTypes['VolumeByMonth'] | null; // VolumeByMonth
+  }
+  VolumeByMonth: { // field return type
+    allVolume: number | null; // Float
+    volumeExcludingZeroFee: number | null; // Float
   }
 }
 
@@ -105,6 +114,11 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     exchange: 'Exchange'
     hello: 'String'
+    volume: 'VolumeByMonth'
+  }
+  VolumeByMonth: { // field return type name
+    allVolume: 'Float'
+    volumeExcludingZeroFee: 'Float'
   }
 }
 
@@ -112,6 +126,10 @@ export interface NexusGenArgTypes {
   Query: {
     exchange: { // args
       ticker: string; // String!
+    }
+    volume: { // args
+      month: number; // Int!
+      year: number; // Int!
     }
   }
 }
