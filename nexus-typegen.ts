@@ -42,6 +42,8 @@ export interface NexusGenObjects {
     date: string; // String!
     exchangeId: string; // String!
     id: string; // ID!
+    priceHigh?: number | null; // Float
+    priceLow?: number | null; // Float
   }
   Query: {};
 }
@@ -72,6 +74,8 @@ export interface NexusGenFieldTypes {
     date: string; // String!
     exchangeId: string; // String!
     id: string; // ID!
+    priceHigh: number | null; // Float
+    priceLow: number | null; // Float
   }
   Query: { // field return type
     exchange: NexusGenRootTypes['Exchange'] | null; // Exchange
@@ -95,6 +99,8 @@ export interface NexusGenFieldTypeNames {
     date: 'String'
     exchangeId: 'String'
     id: 'ID'
+    priceHigh: 'Float'
+    priceLow: 'Float'
   }
   Query: { // field return type name
     exchange: 'Exchange'

@@ -22,6 +22,8 @@ type ExchangeLog {
   date: String!
   exchangeId: String!
   id: ID!
+  priceHigh: Float
+  priceLow: Float
 }
 
 type Query {

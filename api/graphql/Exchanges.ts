@@ -1,18 +1,18 @@
 import { objectType, queryField, nonNull, stringArg } from 'nexus'
-import { Exchange, ExchangeLog } from 'nexus-prisma'
+import { Exchange as ExchangeModel, ExchangeLog as ExchangeLogModel } from 'nexus-prisma'
 
-export const ExchangeObject = objectType({
-  name: Exchange.$name,
-  description: Exchange.$description,
+export const Exchange = objectType({
+  name: ExchangeModel.$name,
+  description: ExchangeModel.$description,
   definition(t) {
-    t.field(Exchange.id)
-    t.field(Exchange.name)
-    t.field(Exchange.ticker)
-    t.field(Exchange.tokenAddress)
-    t.field(Exchange.tokenCap)
-    t.field(Exchange.tokenSupply)
+    t.field(ExchangeModel.id)
+    t.field(ExchangeModel.name)
+    t.field(ExchangeModel.ticker)
+    t.field(ExchangeModel.tokenAddress)
+    t.field(ExchangeModel.tokenCap)
+    t.field(ExchangeModel.tokenSupply)
     t.list.field('dailyLogs', {
-      type: nonNull(ExchangeLogObject),
+      type: nonNull(ExchangeLog),
       resolve: async (_, __, ctx) => {
         const dailyLogs = await ctx.prisma.exchange.findUnique({
           where: { name: _.name },
@@ -27,20 +27,22 @@ export const ExchangeObject = objectType({
   },
 })
 
-export const ExchangeLogObject = objectType({
-  name: ExchangeLog.$name,
-  description: ExchangeLog.$description,
+export const ExchangeLog = objectType({
+  name: ExchangeLogModel.$name,
+  description: ExchangeLogModel.$description,
   definition: (t) => {
-    t.field(ExchangeLog.id)
-    t.field(ExchangeLog.date)
-    t.field(ExchangeLog.dailyVolume)
-    t.field(ExchangeLog.dailyVolumeExcludingZeroFee)
-    t.field(ExchangeLog.exchangeId)
+    t.field(ExchangeLogModel.id)
+    t.field(ExchangeLogModel.date)
+    t.field(ExchangeLogModel.dailyVolume)
+    t.field(ExchangeLogModel.dailyVolumeExcludingZeroFee)
+    t.field(ExchangeLogModel.exchangeId)
+    t.field(ExchangeLogModel.priceHigh)
+    t.field(ExchangeLogModel.priceLow)
   },
 })
 
 export const ExchangeQuery = queryField('exchange', {
-  type: ExchangeObject,
+  type: Exchange,
   args: {
     ticker: nonNull(stringArg()),
   },

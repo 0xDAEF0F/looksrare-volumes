@@ -43,7 +43,6 @@ async function getAllLooksPrices(): Promise<DayPrices> {
   })
 }
 
-// refactor: change ExchangeLog's date field to @unique
 async function updateDbPrices() {
   const looksPriceRecords = await getAllLooksPrices()
   looksPriceRecords.forEach(async (day) => {

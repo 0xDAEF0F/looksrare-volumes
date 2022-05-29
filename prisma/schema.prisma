@@ -11,7 +11,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// This represents an exchange
+/// LooksRare Exchange
 model Exchange {
   id           String        @id @default(cuid())
   name         String        @unique
@@ -22,7 +22,7 @@ model Exchange {
   dailyLogs    ExchangeLog[]
 }
 
-/// Each exchange emits daily logs indexed here.
+/// LooksRare daily log activities
 model ExchangeLog {
   id                          String   @id @default(cuid())
   exchange                    Exchange @relation(fields: [exchangeId], references: [id])
