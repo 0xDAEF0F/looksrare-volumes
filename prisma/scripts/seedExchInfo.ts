@@ -5,7 +5,6 @@ const prisma = new PrismaClient()
 
 const coinMarketCapTokensMapping = {
   looksRare: '17081',
-  x2y2: '18106',
 }
 
 const tokenObjectsPromise = Object.values(coinMarketCapTokensMapping).map((id) => {

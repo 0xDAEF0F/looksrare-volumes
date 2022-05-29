@@ -25,14 +25,14 @@ model Exchange {
 /// Each exchange emits daily logs indexed here.
 model ExchangeLog {
   id                          String   @id @default(cuid())
+  exchange                    Exchange @relation(fields: [exchangeId], references: [id])
   exchangeId                  String
-  date                        String
+  date                        String   @unique
   dailyVolume                 String
   /// Excluding wash-trading.
   dailyVolumeExcludingZeroFee Float?
   dailyUsers                  String
   dailyTransactions           String
-  /// Multiple APIs will be called for this data.
-  price                       Int?
-  exchange                    Exchange @relation(fields: [exchangeId], references: [id])
+  priceHigh                   Float?
+  priceLow                    Float?
 }
