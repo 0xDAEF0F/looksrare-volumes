@@ -58,6 +58,7 @@ export const ExchangeQuery = queryField('exchange', {
 export const VolumeByMonth = objectType({
   name: 'VolumeByMonth',
   definition: (t) => {
+    t.string('currency')
     t.float('allVolume')
     t.float('volumeExcludingZeroFee')
   },
@@ -70,8 +71,8 @@ export const GetVolume = queryField('volume', {
     year: nonNull(intArg({ default: new Date().getUTCFullYear() })),
   },
   resolve: async (_root, args, ctx) => {
-    const initialDate = new Date(args.year, args.month).toISOString()
-    const endDate = new Date(args.year, args.month + 1).toISOString()
+    const initialDate = getISODate(args.year, args.month)
+    const endDate = getISODate(args.year, args.month + 1)
     const matchingResults = await ctx.prisma.exchangeLog.findMany({
       where: {
         date: {
@@ -79,13 +80,29 @@ export const GetVolume = queryField('volume', {
           lt: endDate,
         },
       },
+      select: {
+        date: true,
+        dailyVolume: true,
+        dailyVolumeExcludingZeroFee: true,
+      },
     })
     return {
-      allVolume: matchingResults.reduce((acc, curr) => Number(curr.dailyVolume) + acc, 0),
-      volumeExcludingZeroFee: matchingResults.reduce(
-        (acc, curr) => Number(curr.dailyVolumeExcludingZeroFee) + acc,
-        0
+      allVolume: Math.floor(
+        matchingResults.reduce((acc, curr) => Number(curr.dailyVolume) + acc, 0)
       ),
+      volumeExcludingZeroFee: Math.floor(
+        matchingResults.reduce(
+          (acc, curr) => (curr.dailyVolumeExcludingZeroFee || 0) + acc,
+          0
+        )
+      ),
+      currency: 'ETH',
     }
   },
 })
+
+function getISODate(year: number, month: number) {
+  const date = new Date(year, month)
+  date.setUTCHours(0, 0, 0, 0)
+  return date.toISOString()
+}

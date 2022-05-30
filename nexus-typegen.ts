@@ -48,6 +48,7 @@ export interface NexusGenObjects {
   Query: {};
   VolumeByMonth: { // root type
     allVolume?: number | null; // Float
+    currency?: string | null; // String
     volumeExcludingZeroFee?: number | null; // Float
   }
 }
@@ -88,6 +89,7 @@ export interface NexusGenFieldTypes {
   }
   VolumeByMonth: { // field return type
     allVolume: number | null; // Float
+    currency: string | null; // String
     volumeExcludingZeroFee: number | null; // Float
   }
 }
@@ -118,6 +120,7 @@ export interface NexusGenFieldTypeNames {
   }
   VolumeByMonth: { // field return type name
     allVolume: 'Float'
+    currency: 'String'
     volumeExcludingZeroFee: 'Float'
   }
 }

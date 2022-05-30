@@ -34,5 +34,6 @@ type Query {
 
 type VolumeByMonth {
   allVolume: Float
+  currency: String
   volumeExcludingZeroFee: Float
 }
