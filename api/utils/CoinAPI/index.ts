@@ -46,10 +46,12 @@ async function getAllLooksPrices(): Promise<DayPrices> {
 async function updateDbPrices() {
   const looksPriceRecords = await getAllLooksPrices()
   looksPriceRecords.forEach(async (day) => {
-    return await prisma.exchangeLog.update({
-      where: { date: day.date },
-      data: { priceHigh: day.priceHigh, priceLow: day.priceLow },
-    })
+    return await prisma.exchangeLog
+      .update({
+        where: { date: day.date },
+        data: { priceHigh: day.priceHigh, priceLow: day.priceLow },
+      })
+      .catch((err) => console.log(err))
   })
 }
 

@@ -50,6 +50,7 @@ export interface NexusGenObjects {
     allVolume?: number | null; // Float
     currency?: string | null; // String
     volumeExcludingZeroFee?: number | null; // Float
+    volumeInUSD?: number | null; // Float
   }
 }
 
@@ -65,7 +66,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Exchange: { // field return type
-    dailyLogs: NexusGenRootTypes['ExchangeLog'][] | null; // [ExchangeLog!]
+    dailyLogs: Array<NexusGenRootTypes['ExchangeLog'] | null> | null; // [ExchangeLog]
     id: string; // ID!
     name: string; // String!
     ticker: string; // String!
@@ -84,13 +85,13 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     exchange: NexusGenRootTypes['Exchange'] | null; // Exchange
-    hello: string | null; // String
     volume: NexusGenRootTypes['VolumeByMonth'] | null; // VolumeByMonth
   }
   VolumeByMonth: { // field return type
     allVolume: number | null; // Float
     currency: string | null; // String
     volumeExcludingZeroFee: number | null; // Float
+    volumeInUSD: number | null; // Float
   }
 }
 
@@ -115,13 +116,13 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     exchange: 'Exchange'
-    hello: 'String'
     volume: 'VolumeByMonth'
   }
   VolumeByMonth: { // field return type name
     allVolume: 'Float'
     currency: 'String'
     volumeExcludingZeroFee: 'Float'
+    volumeInUSD: 'Float'
   }
 }
 

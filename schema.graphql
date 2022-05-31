@@ -4,7 +4,7 @@
 
 """LooksRare Exchange"""
 type Exchange {
-  dailyLogs: [ExchangeLog!]
+  dailyLogs: [ExchangeLog]
   id: ID!
   name: String!
   ticker: String!
@@ -28,12 +28,12 @@ type ExchangeLog {
 
 type Query {
   exchange(ticker: String!): Exchange
-  hello: String
-  volume(month: Int! = 4, year: Int! = 2022): VolumeByMonth
+  volume(month: Int! = 5, year: Int! = 2022): VolumeByMonth
 }
 
 type VolumeByMonth {
   allVolume: Float
   currency: String
   volumeExcludingZeroFee: Float
+  volumeInUSD: Float
 }

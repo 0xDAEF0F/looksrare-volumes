@@ -12,16 +12,14 @@ export const Exchange = objectType({
     t.field(ExchangeModel.tokenCap)
     t.field(ExchangeModel.tokenSupply)
     t.list.field('dailyLogs', {
-      type: nonNull(ExchangeLog),
+      type: ExchangeLog,
       resolve: async (_, __, ctx) => {
-        const dailyLogs = await ctx.prisma.exchange.findUnique({
-          where: { name: _.name },
-          select: {
-            dailyLogs: true,
-          },
+        const exchange = await ctx.prisma.exchange.findUnique({
+          where: { ticker: 'LOOKS' },
+          include: { dailyLogs: true },
         })
-        if (dailyLogs) return dailyLogs.dailyLogs
-        return null
+        if (!exchange) return null
+        return exchange.dailyLogs
       },
     })
   },
@@ -55,17 +53,18 @@ export const ExchangeQuery = queryField('exchange', {
   },
 })
 
-export const VolumeByMonth = objectType({
+export const VolumeByMonthT = objectType({
   name: 'VolumeByMonth',
   definition: (t) => {
     t.string('currency')
     t.float('allVolume')
     t.float('volumeExcludingZeroFee')
+    t.float('volumeInUSD')
   },
 })
 
-export const GetVolume = queryField('volume', {
-  type: VolumeByMonth,
+export const VolumeByMonth = queryField('volume', {
+  type: VolumeByMonthT,
   args: {
     month: nonNull(intArg({ default: new Date().getUTCMonth() })),
     year: nonNull(intArg({ default: new Date().getUTCFullYear() })),
@@ -84,6 +83,8 @@ export const GetVolume = queryField('volume', {
         date: true,
         dailyVolume: true,
         dailyVolumeExcludingZeroFee: true,
+        ethPriceHigh: true,
+        ethPriceLow: true,
       },
     })
     return {
@@ -97,6 +98,14 @@ export const GetVolume = queryField('volume', {
         )
       ),
       currency: 'ETH',
+      volumeInUSD: Math.floor(
+        matchingResults.reduce((acc, curr) => {
+          const ethAvgPriceUSD =
+            curr.ethPriceHigh && (curr.ethPriceHigh + curr.ethPriceLow) / 2
+          if (!ethAvgPriceUSD) return acc
+          return curr?.dailyVolumeExcludingZeroFee * ethAvgPriceUSD + acc
+        }, 0)
+      ),
     }
   },
 })
@@ -106,3 +115,16 @@ function getISODate(year: number, month: number) {
   date.setUTCHours(0, 0, 0, 0)
   return date.toISOString()
 }
+
+// function reduceExchangeLogsVolume(logs: typeof ExchangeLog[]) {
+//   const initialObj = {
+//     allVolume: 0,
+//     volumeExcludingZeroFee: 0,
+//     volumeInUSD: 0,
+//     currency: 'ETH',
+//   }
+
+//   return logs.reduce((acc, curr) => {
+//     const { dailyVolume, volumeExcludingZeroFee, } = curr
+//   }, initialObj)
+// }
