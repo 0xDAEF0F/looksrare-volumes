@@ -1,6 +1,6 @@
 import { request, gql } from 'graphql-request'
 
-type ExchangeDailyDatas = {
+type CollectionDailyDatasResponse = {
   collectionDailyDatas: {
     id: string
     date: string
@@ -14,11 +14,9 @@ type ExchangeDailyDatas = {
     }
   }[]
 }
+type CollectionDailyData = CollectionDailyDatasResponse['collectionDailyDatas'][number]
 
-type CollectionDailyDatas = ExchangeDailyDatas['collectionDailyDatas'][number]
-
-const looksURL = 'https://api.thegraph.com/subgraphs/name/looksrare/exchange'
-
+const url = process.env.LOOKSRARE_SUBGRAPH_URL as string
 const gqlQuery = gql`
   query ($date: BigInt!) {
     collectionDailyDatas(
@@ -43,30 +41,28 @@ const gqlQuery = gql`
 
 export default async function getCollectionDailyDatas(looksTimestamp: number) {
   return (
-    await request(looksURL, gqlQuery, {
+    await request(url, gqlQuery, {
       date: looksTimestamp,
     })
-  ).collectionDailyDatas as ExchangeDailyDatas['collectionDailyDatas']
+  ).collectionDailyDatas as CollectionDailyDatasResponse['collectionDailyDatas']
 }
 
-function collectionRealVolumeForDay(collection: CollectionDailyDatas) {
+export function exchangeRealVolumeForDay(
+  dayActivity: CollectionDailyDatasResponse['collectionDailyDatas']
+) {
+  return Number(
+    dayActivity
+      .reduce((acc, curr) => {
+        return filterCollectionRealVolume(curr) + acc
+      }, 0)
+      .toFixed(2)
+  )
+}
+
+function filterCollectionRealVolume(collection: CollectionDailyData) {
   const isRoyaltyAboveZero = Number(collection.collection.totalRoyaltyPaid) > 0
 
   if (isRoyaltyAboveZero) return Number(collection.dailyVolume)
 
   return 0
-}
-
-export function exchangeRealVolumeForDay(
-  dayActivity: Awaited<ReturnType<typeof getCollectionDailyDatas>>
-) {
-  const realVolume = dayActivity.reduce((acc, curr) => {
-    const realVolume = collectionRealVolumeForDay(curr)
-
-    if (realVolume > 0) return realVolume + acc
-
-    return acc
-  }, 0)
-
-  return Number(realVolume.toFixed(2))
 }

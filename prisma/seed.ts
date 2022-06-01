@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { updateDbPrices } from 'api/utils/CoinAPI'
+import { updateDbPrices as updateLooksPrices } from 'api/utils/CoinAPI'
 import { updateEthPrices } from 'api/utils/CoinAPI/ethereum'
 import seedExchangeDailyDatas from './scripts/seedExchDailyDatas'
 import seedExchangeInfo from './scripts/seedExchInfo'
@@ -11,7 +11,7 @@ async function main() {
   await seedExchangeInfo()
   await seedExchangeDailyDatas()
   await seedDailyVolumeExcludingZeroFee()
-  await updateDbPrices()
+  await updateLooksPrices()
   await updateEthPrices()
 }
 

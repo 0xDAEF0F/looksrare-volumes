@@ -1,6 +1,5 @@
 import { SimpleIntervalJob, AsyncTask } from 'toad-scheduler'
 import { PrismaClient } from '@prisma/client'
-import { getLastDayExchangeLog } from 'api/utils/TheGraph/LooksRare/getLastXLogs'
 import {
   dateToLooksUnixTimestamp,
   looksUnixTimestampToDate,
@@ -8,6 +7,7 @@ import {
 import getCollectionDailyDatas, {
   exchangeRealVolumeForDay,
 } from 'api/utils/TheGraph/LooksRare/getCollectionDailyDatas'
+import { getLastExchangeDailyDatas } from 'api/utils/TheGraph/LooksRare/getExchangeDailyDatasByDate.ts'
 
 const prisma = new PrismaClient()
 
@@ -21,7 +21,7 @@ async function getTodayRealVolume() {
 const task = new AsyncTask(
   'Update DB for latest exchange information',
   async () => {
-    const looksLogDay = await getLastDayExchangeLog()
+    const looksLogDay = await getLastExchangeDailyDatas()
     const realVolume = await getTodayRealVolume()
     const todayISOString = looksUnixTimestampToDate(Number(looksLogDay.date))
 
@@ -31,45 +31,32 @@ const task = new AsyncTask(
 
     // need to create dailyLog
     if (!lastLooksLog) {
-      await prisma.exchange.update({
+      await prisma.exchangeLog.update({
         where: {
-          ticker: 'LOOKS',
+          date: todayISOString,
         },
         data: {
-          dailyLogs: {
-            create: {
-              date: todayISOString,
-              dailyTransactions: looksLogDay.dailyTransactions,
-              dailyUsers: looksLogDay.dailyUsers,
-              dailyVolume: Number(looksLogDay.dailyVolume).toFixed(2),
-              dailyVolumeExcludingZeroFee: realVolume,
-            },
-          },
+          date: todayISOString,
+          dailyTransactions: looksLogDay.dailyTransactions,
+          dailyUsers: looksLogDay.dailyUsers,
+          dailyVolume: Number(looksLogDay.dailyVolume.toFixed(2)),
+          dailyVolumeExcludingZeroFee: realVolume,
         },
       })
     }
 
     // update dailyLog
     if (lastLooksLog) {
-      await prisma.exchange.update({
+      await prisma.exchangeLog.update({
         where: {
-          name: 'LooksRare',
+          date: lastLooksLog.date,
         },
         data: {
-          dailyLogs: {
-            update: {
-              where: {
-                id: lastLooksLog?.id,
-              },
-              data: {
-                date: todayISOString,
-                dailyTransactions: looksLogDay.dailyTransactions,
-                dailyUsers: looksLogDay.dailyUsers,
-                dailyVolume: Number(looksLogDay.dailyVolume).toFixed(2),
-                dailyVolumeExcludingZeroFee: realVolume,
-              },
-            },
-          },
+          date: todayISOString,
+          dailyTransactions: looksLogDay.dailyTransactions,
+          dailyUsers: looksLogDay.dailyUsers,
+          dailyVolume: Number(looksLogDay.dailyVolume.toFixed(2)),
+          dailyVolumeExcludingZeroFee: realVolume,
         },
       })
     }
@@ -80,7 +67,7 @@ const task = new AsyncTask(
 )
 
 export const job1 = new SimpleIntervalJob(
-  { seconds: 15, runImmediately: false },
+  { seconds: 15, runImmediately: true },
   task,
   'id_1'
 )

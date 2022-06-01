@@ -44,8 +44,8 @@ async function getAllEthPrices(): Promise<DayPrices> {
 }
 
 async function updateEthPrices() {
-  const looksPriceRecords = await getAllEthPrices()
-  looksPriceRecords.forEach(async (day) => {
+  const ethPriceRecords = await getAllEthPrices()
+  ethPriceRecords.forEach(async (day) => {
     await prisma.exchangeLog
       .update({
         where: { date: day.date },

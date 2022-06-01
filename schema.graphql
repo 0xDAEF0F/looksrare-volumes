@@ -13,15 +13,13 @@ type Exchange {
   tokenSupply: Float!
 }
 
-"""LooksRare daily log activities"""
+"""LooksRare daily logs"""
 type ExchangeLog {
-  dailyVolume: String!
+  dailyVolume: Float!
 
   """Excluding wash-trading."""
   dailyVolumeExcludingZeroFee: Float
-  date: String!
-  exchangeId: String!
-  id: ID!
+  date: ID!
   priceHigh: Float
   priceLow: Float
 }

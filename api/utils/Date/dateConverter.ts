@@ -1,5 +1,4 @@
 // LooksRare subgraph only understands UTC times
-// You can pass a date object or timestamp in string or number
 
 export function dateToLooksUnixTimestamp(date: Date) {
   const yearOfDate = date.getFullYear()

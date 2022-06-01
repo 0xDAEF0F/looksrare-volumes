@@ -37,11 +37,9 @@ export interface NexusGenObjects {
     tokenSupply: number; // Float!
   }
   ExchangeLog: { // root type
-    dailyVolume: string; // String!
+    dailyVolume: number; // Float!
     dailyVolumeExcludingZeroFee?: number | null; // Float
-    date: string; // String!
-    exchangeId: string; // String!
-    id: string; // ID!
+    date: string; // ID!
     priceHigh?: number | null; // Float
     priceLow?: number | null; // Float
   }
@@ -75,11 +73,9 @@ export interface NexusGenFieldTypes {
     tokenSupply: number; // Float!
   }
   ExchangeLog: { // field return type
-    dailyVolume: string; // String!
+    dailyVolume: number; // Float!
     dailyVolumeExcludingZeroFee: number | null; // Float
-    date: string; // String!
-    exchangeId: string; // String!
-    id: string; // ID!
+    date: string; // ID!
     priceHigh: number | null; // Float
     priceLow: number | null; // Float
   }
@@ -106,11 +102,9 @@ export interface NexusGenFieldTypeNames {
     tokenSupply: 'Float'
   }
   ExchangeLog: { // field return type name
-    dailyVolume: 'String'
+    dailyVolume: 'Float'
     dailyVolumeExcludingZeroFee: 'Float'
-    date: 'String'
-    exchangeId: 'String'
-    id: 'ID'
+    date: 'ID'
     priceHigh: 'Float'
     priceLow: 'Float'
   }

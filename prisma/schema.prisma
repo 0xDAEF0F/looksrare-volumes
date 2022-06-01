@@ -13,26 +13,22 @@ datasource db {
 
 /// LooksRare Exchange
 model Exchange {
-  id           String        @id @default(cuid())
-  name         String        @unique
-  ticker       String        @unique
-  tokenAddress String        @unique
+  id           String @id @default(cuid())
+  name         String @unique
+  ticker       String @unique
+  tokenAddress String @unique
   tokenSupply  Float
   tokenCap     Int
-  dailyLogs    ExchangeLog[]
 }
 
-/// LooksRare daily log activities
+/// LooksRare daily logs
 model ExchangeLog {
-  id                          String   @id @default(cuid())
-  exchange                    Exchange @relation(fields: [exchangeId], references: [id])
-  exchangeId                  String
-  date                        String   @unique
-  dailyVolume                 String
+  date                        String @id @unique
+  dailyVolume                 Float
   /// Excluding wash-trading.
   dailyVolumeExcludingZeroFee Float?
-  dailyUsers                  String
-  dailyTransactions           String
+  dailyUsers                  Int
+  dailyTransactions           Int
   priceHigh                   Float?
   priceLow                    Float?
   ethPriceHigh                Float?

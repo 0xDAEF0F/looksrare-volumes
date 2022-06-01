@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { to } from 'await-to-js'
 
 type CryptoInfo = {
   status: {
@@ -38,8 +37,7 @@ function getAxiosConfig(id: string) {
 }
 
 async function getCoinMarketCapData(assetId: string) {
-  const [err, res] = await to(axios(getAxiosConfig(assetId)))
-  if (err) throw new Error('Fail fetch.')
+  const res = await axios(getAxiosConfig(assetId))
   const cryptoInfo = res.data as CryptoInfo
   return {
     name: cryptoInfo.data[assetId].name,

@@ -14,12 +14,7 @@ export const Exchange = objectType({
     t.list.field('dailyLogs', {
       type: ExchangeLog,
       resolve: async (_, __, ctx) => {
-        const exchange = await ctx.prisma.exchange.findUnique({
-          where: { ticker: 'LOOKS' },
-          include: { dailyLogs: true },
-        })
-        if (!exchange) return null
-        return exchange.dailyLogs
+        return await ctx.prisma.exchangeLog.findMany()
       },
     })
   },
@@ -29,11 +24,9 @@ export const ExchangeLog = objectType({
   name: ExchangeLogModel.$name,
   description: ExchangeLogModel.$description,
   definition: (t) => {
-    t.field(ExchangeLogModel.id)
     t.field(ExchangeLogModel.date)
     t.field(ExchangeLogModel.dailyVolume)
     t.field(ExchangeLogModel.dailyVolumeExcludingZeroFee)
-    t.field(ExchangeLogModel.exchangeId)
     t.field(ExchangeLogModel.priceHigh)
     t.field(ExchangeLogModel.priceLow)
   },
@@ -79,13 +72,6 @@ export const VolumeByMonth = queryField('volume', {
           lt: endDate,
         },
       },
-      select: {
-        date: true,
-        dailyVolume: true,
-        dailyVolumeExcludingZeroFee: true,
-        ethPriceHigh: true,
-        ethPriceLow: true,
-      },
     })
     return {
       allVolume: Math.floor(
@@ -115,16 +101,3 @@ function getISODate(year: number, month: number) {
   date.setUTCHours(0, 0, 0, 0)
   return date.toISOString()
 }
-
-// function reduceExchangeLogsVolume(logs: typeof ExchangeLog[]) {
-//   const initialObj = {
-//     allVolume: 0,
-//     volumeExcludingZeroFee: 0,
-//     volumeInUSD: 0,
-//     currency: 'ETH',
-//   }
-
-//   return logs.reduce((acc, curr) => {
-//     const { dailyVolume, volumeExcludingZeroFee, } = curr
-//   }, initialObj)
-// }

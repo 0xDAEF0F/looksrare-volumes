@@ -13,7 +13,6 @@ export default async function seedDailyVolumeExcludingZeroFee() {
   // 1. How do I know all the days of the exchange
   const dbDates = await prisma.exchangeLog.findMany({
     select: {
-      id: true,
       date: true,
     },
   })
@@ -23,32 +22,24 @@ export default async function seedDailyVolumeExcludingZeroFee() {
   )
   // 3. get a map arr with key:date -- value:realVolume
   const mappingTimestampWithRealVolume = await Promise.all(
-    timestampsOfInterest.map(async (date, i) => {
+    timestampsOfInterest.map(async (date) => {
       const dayCollectionActivities = await getCollectionDailyDatas(date)
       const realVolume = exchangeRealVolumeForDay(dayCollectionActivities)
       return {
-        id: dbDates[i].id,
         date: looksUnixTimestampToDate(date),
         dailyVolumeExcludingZeroFee: realVolume,
       }
     })
   )
   // 4. for each record and update the exchange model (need to implement bulk update)
-  mappingTimestampWithRealVolume.map(async (operation) => {
-    return await prisma.exchange.update({
-      where: { ticker: 'LOOKS' },
-      data: {
-        dailyLogs: {
-          update: {
-            where: {
-              id: operation.id,
-            },
-            data: {
-              dailyVolumeExcludingZeroFee: operation.dailyVolumeExcludingZeroFee,
-            },
-          },
+  mappingTimestampWithRealVolume.forEach(async (operation) => {
+    await prisma.exchangeLog
+      .update({
+        where: { date: operation.date },
+        data: {
+          dailyVolumeExcludingZeroFee: operation.dailyVolumeExcludingZeroFee,
         },
-      },
-    })
+      })
+      .catch((e) => console.log(e))
   })
 }
