@@ -25,14 +25,9 @@ const gqlQuery = gql`
       first: 1000
       where: { date: $date }
     ) {
-      id
       date
       dailyVolume
-      dailyVolumeExcludingZeroFee
-      dailyTransactions
       collection {
-        totalVolume
-        totalTransactions
         totalRoyaltyPaid
       }
     }

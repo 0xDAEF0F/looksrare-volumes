@@ -31,10 +31,7 @@ const task = new AsyncTask(
 
     // need to create dailyLog
     if (!lastLooksLog) {
-      await prisma.exchangeLog.update({
-        where: {
-          date: todayISOString,
-        },
+      await prisma.exchangeLog.create({
         data: {
           date: todayISOString,
           dailyTransactions: looksLogDay.dailyTransactions,
