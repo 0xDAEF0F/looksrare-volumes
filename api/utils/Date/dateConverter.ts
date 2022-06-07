@@ -12,3 +12,15 @@ export function dateToLooksUnixTimestamp(date: Date) {
 export function looksUnixTimestampToDate(timestamp: number) {
   return new Date(timestamp * 1000).toISOString()
 }
+
+export function dateToISOStringUTCTime(date: Date) {
+  const year = date.getUTCFullYear()
+  const month = date.getUTCMonth()
+  const day = date.getUTCDate()
+  // new Date
+  const newDate = new Date(year, month, day)
+  // set UTC to +0
+  newDate.setUTCHours(0, 0, 0, 0)
+  // return ISO String (db format)
+  return newDate.toISOString()
+}

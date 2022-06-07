@@ -5,7 +5,7 @@ import { graphqlHTTP } from 'express-graphql'
 import { schema } from './schema'
 import { context } from './context'
 import { ToadScheduler } from 'toad-scheduler'
-import { job1 } from './cron/insertLatestLooksExchangeLog'
+import { job1 } from './cron/updateExchangeLog'
 
 const scheduler = new ToadScheduler()
 
