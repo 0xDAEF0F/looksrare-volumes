@@ -1,8 +1,8 @@
 // LooksRare subgraph only understands UTC times
 
 export function dateToLooksUnixTimestamp(date: Date) {
-  const yearOfDate = date.getFullYear()
-  const monthOfDate = date.getMonth()
+  const yearOfDate = date.getUTCFullYear()
+  const monthOfDate = date.getUTCMonth()
   const dayOfDate = date.getUTCDate()
   //   get GMT seconds (format that LooksRare understands)
   const looksDateFormat = Date.UTC(yearOfDate, monthOfDate, dayOfDate) / 1000

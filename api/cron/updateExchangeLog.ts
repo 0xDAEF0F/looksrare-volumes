@@ -43,7 +43,7 @@ const task = new AsyncTask(
 )
 
 export const job1 = new SimpleIntervalJob(
-  { seconds: 1800, runImmediately: false },
+  { seconds: 60 * 60, runImmediately: false },
   task,
   'id_1'
 )

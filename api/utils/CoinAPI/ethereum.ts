@@ -51,7 +51,7 @@ async function updateEthPrices() {
         where: { date: day.date },
         data: { ethPriceHigh: day.priceHigh, ethPriceLow: day.priceLow },
       })
-      .catch((err) => console.log(err))
+      .catch(() => console.log(`could not update eth prices for date: ${day.date}`))
   })
 }
 
