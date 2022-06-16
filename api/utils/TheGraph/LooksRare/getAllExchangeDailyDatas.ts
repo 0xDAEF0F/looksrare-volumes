@@ -1,8 +1,6 @@
 import { dateToLooksUnixTimestamp } from 'api/utils/Date/dateConverter'
 import { request, gql } from 'graphql-request'
-import dotenv from 'dotenv'
 import { ExchangeDailyDatasResponse } from './getExchangeDailyDatasByDate.ts'
-dotenv.config()
 
 const gqlQuery = gql`
   query ($date: BigInt!) {

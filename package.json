@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --inspect --transpile-only --exit-child --watch api api/index.ts",
-    "initialize-mysql-container": "docker run --name family_db -e MYSQL_ROOT_PASSWORD=1234 -p 3306:3306 -d mysql",
+    "initialize-postgres-container": "docker run --name looks_db -e POSTGRES_PASSWORD=1234 -p 5432:5432 -d postgres",
     "test": "mocha",
     "test:watch": "mocha --watch",
     "lint": "eslint --ext .ts .",

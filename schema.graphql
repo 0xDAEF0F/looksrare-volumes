@@ -25,7 +25,7 @@ type ExchangeLog {
 }
 
 type Query {
-  exchange(ticker: String!): Exchange
+  exchange: Exchange
   volume(month: Int! = 5, year: Int! = 2022): VolumeByMonth
 }
 

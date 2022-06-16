@@ -5,6 +5,7 @@ import { getLastExchangeDailyDatas } from 'api/utils/TheGraph/LooksRare/getExcha
 import updateRealVolumes from 'api/utils/TheGraph/LooksRare/updateRealVolumes'
 import { updateEthPrices } from 'api/utils/CoinAPI/ethereum'
 import { updateDbPrices } from 'api/utils/CoinAPI'
+import updateRawVolumes from 'api/utils/TheGraph/LooksRare/updateRawVolumes'
 
 const prisma = new PrismaClient()
 
@@ -19,6 +20,7 @@ const task = new AsyncTask(
 
     // safe to update the prices and real volumes
     if (lastLooksLog) {
+      await updateRawVolumes()
       await updateRealVolumes()
       await updateDbPrices()
       await updateEthPrices()

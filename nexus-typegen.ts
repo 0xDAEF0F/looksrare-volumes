@@ -122,9 +122,6 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Query: {
-    exchange: { // args
-      ticker: string; // String!
-    }
     volume: { // args
       month: number; // Int!
       year: number; // Int!

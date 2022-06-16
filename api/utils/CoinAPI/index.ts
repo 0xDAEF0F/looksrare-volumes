@@ -1,8 +1,5 @@
-import dotenv from 'dotenv'
 import Axios from 'axios'
 import { PrismaClient } from '@prisma/client'
-
-dotenv.config()
 
 const prisma = new PrismaClient()
 

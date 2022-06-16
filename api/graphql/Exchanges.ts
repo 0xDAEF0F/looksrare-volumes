@@ -1,18 +1,19 @@
-import { objectType, queryField, nonNull, stringArg, intArg } from 'nexus'
-import { Exchange as ExchangeModel, ExchangeLog as ExchangeLogModel } from 'nexus-prisma'
+import { mean } from 'lodash'
+import { objectType, queryField, nonNull, intArg } from 'nexus'
+import { Exchange, ExchangeLog } from 'nexus-prisma'
 
-export const Exchange = objectType({
-  name: ExchangeModel.$name,
-  description: ExchangeModel.$description,
+export const ExchangeGql = objectType({
+  name: Exchange.$name,
+  description: Exchange.$description,
   definition(t) {
-    t.field(ExchangeModel.id)
-    t.field(ExchangeModel.name)
-    t.field(ExchangeModel.ticker)
-    t.field(ExchangeModel.tokenAddress)
-    t.field(ExchangeModel.tokenCap)
-    t.field(ExchangeModel.tokenSupply)
+    t.field(Exchange.id)
+    t.field(Exchange.name)
+    t.field(Exchange.ticker)
+    t.field(Exchange.tokenAddress)
+    t.field(Exchange.tokenCap)
+    t.field(Exchange.tokenSupply)
     t.list.field('dailyLogs', {
-      type: ExchangeLog,
+      type: ExchangeLogGql,
       resolve: async (_, __, ctx) => {
         return await ctx.prisma.exchangeLog.findMany()
       },
@@ -20,27 +21,24 @@ export const Exchange = objectType({
   },
 })
 
-export const ExchangeLog = objectType({
-  name: ExchangeLogModel.$name,
-  description: ExchangeLogModel.$description,
+export const ExchangeLogGql = objectType({
+  name: ExchangeLog.$name,
+  description: ExchangeLog.$description,
   definition: (t) => {
-    t.field(ExchangeLogModel.date)
-    t.field(ExchangeLogModel.dailyVolume)
-    t.field(ExchangeLogModel.dailyVolumeExcludingZeroFee)
-    t.field(ExchangeLogModel.priceHigh)
-    t.field(ExchangeLogModel.priceLow)
+    t.field(ExchangeLog.date)
+    t.field(ExchangeLog.dailyVolume)
+    t.field(ExchangeLog.dailyVolumeExcludingZeroFee)
+    t.field(ExchangeLog.priceHigh)
+    t.field(ExchangeLog.priceLow)
   },
 })
 
 export const ExchangeQuery = queryField('exchange', {
-  type: Exchange,
-  args: {
-    ticker: nonNull(stringArg()),
-  },
+  type: ExchangeGql,
   resolve: (_root, _args, ctx) => {
     return ctx.prisma.exchange.findUnique({
       where: {
-        ticker: _args.ticker,
+        ticker: 'LOOKS',
       },
     })
   },
@@ -72,29 +70,49 @@ export const VolumeByMonth = queryField('volume', {
           lt: endDate,
         },
       },
+      select: {
+        ethPriceHigh: true,
+        ethPriceLow: true,
+        dailyVolume: true,
+        dailyVolumeExcludingZeroFee: true,
+      },
     })
-    return {
-      allVolume: Math.floor(
-        matchingResults.reduce((acc, curr) => Number(curr.dailyVolume) + acc, 0)
-      ),
-      volumeExcludingZeroFee: Math.floor(
-        matchingResults.reduce(
-          (acc, curr) => (curr.dailyVolumeExcludingZeroFee || 0) + acc,
-          0
-        )
-      ),
-      currency: 'ETH',
-      volumeInUSD: Math.floor(
-        matchingResults.reduce((acc, curr) => {
-          const ethAvgPriceUSD =
-            curr.ethPriceHigh && (curr.ethPriceHigh + curr.ethPriceLow) / 2
-          if (!ethAvgPriceUSD) return acc
-          return curr?.dailyVolumeExcludingZeroFee * ethAvgPriceUSD + acc
-        }, 0)
-      ),
-    }
+    return reduceVolumesFromLogs(matchingResults)
   },
 })
+
+type VolumeType = {
+  dailyVolume: number
+  dailyVolumeExcludingZeroFee: number | null
+  ethPriceHigh: number | null
+  ethPriceLow: number | null
+}
+
+function reduceVolumesFromLogs(arr: VolumeType[]) {
+  const startingAccumulator = {
+    currency: 'ETH',
+    rawVolume: 0.0,
+    volumeExcludingZeroFee: 0,
+    volumeInUSD: 0,
+  }
+
+  return arr.reduce((acc, curr) => {
+    const { ethPriceHigh, ethPriceLow, dailyVolume, dailyVolumeExcludingZeroFee } = curr
+    const { rawVolume, currency, volumeExcludingZeroFee, volumeInUSD } = acc
+
+    // calculate eth/usd average for the day times the real volume
+    const ethAvg = ethPriceHigh && ethPriceLow ? mean([ethPriceHigh, ethPriceLow]) : 0
+    const usdVol = Number(dailyVolumeExcludingZeroFee) * ethAvg
+
+    return {
+      currency: currency,
+      rawVolume: rawVolume + Number(dailyVolume),
+      volumeExcludingZeroFee:
+        volumeExcludingZeroFee + Number(dailyVolumeExcludingZeroFee) || 0,
+      volumeInUSD: volumeInUSD + usdVol,
+    }
+  }, startingAccumulator)
+}
 
 function getISODate(year: number, month: number) {
   const date = new Date(year, month)

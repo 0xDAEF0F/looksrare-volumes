@@ -35,12 +35,15 @@ export async function getExchangeDailyDatasByDate(date: number) {
     }
   )) as ExchangeDailyDatasResponse
 
-  // return exchangeDailyDatas[0]
+  const dailyDatas = exchangeDailyDatas.shift()
+
+  if (!dailyDatas) throw new Error()
+
   return {
-    ...exchangeDailyDatas[0],
-    dailyUsers: Number(exchangeDailyDatas[0].dailyUsers),
-    dailyVolume: Number(exchangeDailyDatas[0].dailyVolume),
-    dailyTransactions: Number(exchangeDailyDatas[0].dailyTransactions),
+    ...dailyDatas,
+    dailyUsers: Number(dailyDatas.dailyUsers),
+    dailyVolume: Number(dailyDatas.dailyVolume),
+    dailyTransactions: Number(dailyDatas.dailyTransactions),
   }
 }
 
