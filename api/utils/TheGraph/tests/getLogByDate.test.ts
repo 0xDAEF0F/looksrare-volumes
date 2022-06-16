@@ -1,11 +1,11 @@
-import dotenv from 'dotenv'
+// import dotenv from 'dotenv'
 import { it } from 'mocha'
 import { assert, expect } from 'chai'
 import to from 'await-to-js'
-import { getExchangeDailyDatasByDate } from '../LooksRare/getExchangeDailyDatasByDate.ts'
+import { getExchangeDailyDatasByDate } from '../LooksRare/getExchangeDailyDatasByDate'
 import { dateToLooksUnixTimestamp } from 'api/utils/Date/dateConverter'
 
-dotenv.config()
+// dotenv.config()
 
 describe('Query LooksRare Daily Log By Date.', () => {
   it('Expect object to not be null.', async () => {

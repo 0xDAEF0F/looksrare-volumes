@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { dateToLooksUnixTimestamp } from 'api/utils/Date/dateConverter'
-import { getExchangeDailyDatasByDate } from './getExchangeDailyDatasByDate.ts'
+import { getExchangeDailyDatasByDate } from './getExchangeDailyDatasByDate'
 import to from 'await-to-js'
 
 const prisma = new PrismaClient()

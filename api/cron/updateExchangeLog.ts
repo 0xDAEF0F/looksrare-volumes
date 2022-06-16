@@ -1,7 +1,7 @@
 import { SimpleIntervalJob, AsyncTask } from 'toad-scheduler'
 import { PrismaClient } from '@prisma/client'
 import { dateToISOStringUTCTime } from 'api/utils/Date/dateConverter'
-import { getLastExchangeDailyDatas } from 'api/utils/TheGraph/LooksRare/getExchangeDailyDatasByDate.ts'
+import { getLastExchangeDailyDatas } from 'api/utils/TheGraph/LooksRare/getExchangeDailyDatasByDate'
 import updateRealVolumes from 'api/utils/TheGraph/LooksRare/updateRealVolumes'
 import { updateEthPrices } from 'api/utils/CoinAPI/ethereum'
 import { updateDbPrices } from 'api/utils/CoinAPI'
