@@ -1,5 +1,3 @@
-## Blockchain band-pass filter
-
 # Description
 
 This project aims to track, parse, and index events of interest
