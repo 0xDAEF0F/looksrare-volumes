@@ -1,12 +1,7 @@
 # Description
 
-This project aims to track, parse, and index events of interest
-happening mainly in the Ethereum blockchain. The main events of
-interest are volumes, prices, filter trade-washing in these domains:
-
-- NFT collections
-- DeFi protocols
-- Crypto
+This project tracks LooksRare exchange volumes and
+prunes sales that do not contain a royalty.
 
 # Tech Stack
 
@@ -19,15 +14,3 @@ interest are volumes, prices, filter trade-washing in these domains:
 
 - Prettier
 - Typescript
-
-# TODO:
-
-- Add service account to .env
-- Add a pipeline check linting, etc
-- Docker compose fix to load envs correctly.
-- Relay compliant schema
-
-# PRs
-
-All PRs are welcome if they are aligned to the
-purpose of this repository.
