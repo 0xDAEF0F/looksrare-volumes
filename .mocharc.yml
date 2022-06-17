@@ -5,9 +5,9 @@ watch-files:
 require:
   - 'ts-node/register'
   - 'tsconfig-paths/register'
+  - 'dotenv/config'
 extension:
   - 'ts'
 spec:
   # Where to look for tests
   - 'api/**/*.test.ts'
-  - 'prisma/**/*.test.ts'
